@@ -1,66 +1,47 @@
-## Foundry
+# Uniswap V3 Periphery
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+[![Tests](https://github.com/Uniswap/uniswap-v3-periphery/workflows/Tests/badge.svg)](https://github.com/Uniswap/uniswap-v3-periphery/actions?query=workflow%3ATests)
+[![Lint](https://github.com/Uniswap/uniswap-v3-periphery/workflows/Lint/badge.svg)](https://github.com/Uniswap/uniswap-v3-periphery/actions?query=workflow%3ALint)
 
-Foundry consists of:
+This repository contains the periphery smart contracts for the Uniswap V3 Protocol.
+For the lower level core contracts, see the [uniswap-v3-core](https://github.com/Uniswap/uniswap-v3-core)
+repository.
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## Local deployment
 
-## Documentation
+In order to deploy this code to a local testnet, you should install the npm package
+`@uniswap/v3-periphery`
+and import bytecode imported from artifacts located at
+`@uniswap/v3-periphery/artifacts/contracts/*/*.json`.
+For example:
 
-https://book.getfoundry.sh/
+```typescript
+import {
+  abi as SWAP_ROUTER_ABI,
+  bytecode as SWAP_ROUTER_BYTECODE,
+} from '@uniswap/v3-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json'
 
-## Usage
-
-### Build
-
-```shell
-$ forge build
+// deploy the bytecode
 ```
 
-### Test
+This will ensure that you are testing against the same bytecode that is deployed to
+mainnet and public testnets, and all Uniswap code will correctly interoperate with
+your local deployment.
 
-```shell
-$ forge test
-```
+## Using solidity interfaces
 
-### Format
+The Uniswap v3 periphery interfaces are available for import into solidity smart contracts
+via the npm artifact `@uniswap/v3-periphery`, e.g.:
 
-```shell
-$ forge fmt
-```
+```solidity
+import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
 
-### Gas Snapshots
+contract MyContract {
+  ISwapRouter router;
 
-```shell
-$ forge snapshot
-```
+  function doSomethingWithSwapRouter() {
+    // router.exactInput(...);
+  }
+}
 
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
 ```
